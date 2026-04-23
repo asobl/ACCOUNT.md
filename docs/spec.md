@@ -990,3 +990,62 @@ ACCOUNT.md is one entry in a family of structured markdown formats designed for 
 | What it needs to know about a customer | **ACCOUNT.md** |
 
 Each format follows the same principle: structured data for machine consumption, prose for human reasoning, both in one portable file.
+
+---
+
+## Appendix: Verification Workflow
+
+Verification tiers only deliver value if teams actually promote signals. Without a workflow, most signals stay `single-source` forever and the tier system becomes decoration. This appendix defines the minimum operating rhythm that keeps confidence levels honest.
+
+### When to Promote
+
+Promotion is triggered by evidence, not by schedule or backlog pressure.
+
+| From → To | Trigger |
+|---|---|
+| `single-source` → `corroborated` | A second independent source agrees. Independent means a different conversation, a different date, or a different data system. Two mentions in the same meeting are one source, not two. |
+| `corroborated` → `verified` | A third independent source agrees, OR a human with direct knowledge of the account reviews the signal and confirms accuracy. |
+| any → (no change) | No new evidence surfaced. The signal stays where it is. Staleness is handled separately (see Review Cadence). |
+| any → (downgrade) | Evidence turned out to be wrong, stale, or misattributed. Add a new signal log entry explaining the downgrade. Do not delete the original row. |
+
+### Who Can Promote
+
+| Role | Can promote to |
+|---|---|
+| AI agent | `single-source` only. Agents record what they read and propose new sources. They do not upgrade confidence on their own. |
+| Any team member | `corroborated` |
+| Account owner, or explicitly designated approver | `verified` |
+
+Teams may delegate differently in `ACCOUNT.config.md`. The default is: agents record, humans upgrade.
+
+### Review Cadence
+
+Open `single-source` signals go stale. Review them on a fixed rhythm so the signal log reflects reality, not accumulated noise.
+
+| Account health | Review frequency | What to do |
+|---|---|---|
+| `green` | Monthly | Scan `single-source` signals older than 60 days. Upgrade, archive, or leave a brief note explaining why the signal is still relevant. |
+| `yellow` | Weekly | Scan all `single-source` signals. Any unresolved signal older than 30 days either gets a second source identified, or is archived. |
+| `red` | Before every customer interaction | All signals reviewed. Anything driving the red status must be at `corroborated` or `verified`, or the health score is reconsidered. |
+
+### Agent vs. Human Division of Labor
+
+| Task | Agent | Human |
+|---|---|---|
+| Read a transcript and extract a signal | Yes | Optional |
+| Record a signal at `single-source` | Yes | Yes |
+| Identify a candidate second source | Yes (proposes) | Yes (confirms) |
+| Promote to `corroborated` | No | Yes |
+| Promote to `verified` | No | Yes (account owner or approver) |
+| Downgrade a signal | No | Yes |
+| Flag stale signals for review | Yes | Yes |
+
+### Worked Example
+
+A churn-risk signal enters as `single-source` from a standup transcript on 2026-01-08: *"Derek from Pinnacle said the new pricing is a problem."* An agent records the signal and proposes a candidate second source: usage dashboard shows a 40 percent drop in daily actives since the pricing change.
+
+On 2026-02-05, a team member reviews the proposal, confirms the usage data is independent of the standup mention, and promotes the signal to `corroborated`. The original signal row's confidence is updated, and a new row is added to the log explaining the promotion.
+
+On 2026-03-18, the account owner has a direct call with Laura (decision-maker), who confirms the pricing concern is blocking renewal. The owner promotes the signal to `verified` and changes `health` from `green` to `yellow`. The health change is logged as its own signal row citing the verified churn-risk signal as the driver.
+
+At no point did the agent upgrade a signal. At every promotion, a human made the judgment call. The agent surfaces and proposes. The human decides.
