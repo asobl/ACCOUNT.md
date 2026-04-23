@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Logs
+logs/
+
+# Env and secrets
+.env
+.env.*
+*.key
+*.pem
